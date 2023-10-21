@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+###############################################################################
+# dn 
+#
+# A plugin for daily note taking in `nb` notes.
+#
+# Author: BHeuser (https://github.com/ohyhyb)
+###############################################################################
+
+# Add the new subcommand names with `_subcommands add <name>`.
+_subcommands add "dn"
+
+# Define help and usage text with `_subcommands describe <subcommand> <usage>`.
+_subcommands describe "dn" <<HEREDOC
+Usage:
+nb dn
+
+Description:
+Create a daily note and open it if there was no daily note from this day. If there already was a daily note just open it.
+
+Examples:
+# create today dailynote 
+nb dn
+
+HEREDOC
+
+_dn () {
+
+today=$(date '+%Y-%m-%d')
+
+if !  [ -n "${NB_DN_DIR+set}" ]; then
+printf "Daily notetaking directory has not been set!\nSetting it to standard directory ${NB_DIR}/home/dailynotes\nThis setting can be changed in the ~/.nbrc file."
+echo "export NB_DN_DIR=\"${NB_DN_DIR:-${NB_DIR}/home/dailynotes}\"" >> ~/.nbrc
+export NB_DN_DIR="${NB_DN_DIR:-${NB_DIR}/home/dailynotes}"
+fi 
+
+todaysnotename="${NB_DN_DIR}/${today}.md"
+
+if [  -e "$todaysnotename"  ]
+then
+nb e "dailynotes/${today}.md"
+else
+printf "#dailynote\n#${today}\n\n## Daily note ${today}  " | nb add $todaysnotename
+nb e "dailynotes/${today}.md"
+fi
+
+}
