@@ -4,7 +4,7 @@
 #
 # A plugin for daily note taking in `nb` notes.
 #
-# Author: BHeuser (https://github.com/ohyhyb)
+# Author: BHeuser (https://github.com/HeuserB/nb_dailynotes)
 ###############################################################################
 
 # Add the new subcommand names with `_subcommands add <name>`.
